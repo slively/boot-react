@@ -1,21 +1,20 @@
-package react.api;
+package react.controllers.advice;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import react.models.ErrorMessage;
 
+@Slf4j
 @ControllerAdvice
 public class AuthenticationExceptionHandler {
-  private final Log log = LogFactory.getLog(getClass());
-
-  @ExceptionHandler(AuthenticationException.class)
   @ResponseBody
   @ResponseStatus(HttpStatus.UNAUTHORIZED)
+  @ExceptionHandler(AuthenticationException.class)
   public ErrorMessage handleAuthenticationException(AuthenticationException e) {
     log.debug("Incorrect login");
     return new ErrorMessage(e.getMessage(), "login.error.badLogin");

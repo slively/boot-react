@@ -1,4 +1,4 @@
-package react.api;
+package react.models;
 
 public class ErrorMessage {
   private String message;

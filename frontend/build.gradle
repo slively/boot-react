@@ -3,7 +3,6 @@ plugins {
 }
 
 apply plugin: 'base'
-version '0.0.1'
 
 buildDir = 'dist'
 

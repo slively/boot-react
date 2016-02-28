@@ -1,15 +1,13 @@
 # Spring boot and react hot starter
 
-image:https://travis-ci.org/geowarin/boot-react.svg?branch=master["Build Status", link="https://travis-ci.org/geowarin/boot-react"]
-
-Be more productive with this simple project that uses the https://spring.io/blog/2015/06/17/devtools-in-spring-boot-1-3[spring dev tools]
-and https://github.com/gaearon/babel-plugin-react-transform[react transform] for hot reloading.
+Be more productive with this simple project that uses the [spring dev tools](https://spring.io/blog/2015/06/17/devtools-in-spring-boot-1-3)
+and [react transform](https://github.com/gaearon/babel-plugin-react-transform) for hot reloading.
 
 Everything: backend, frontend and styles will be hot reloaded automatically.
 
-See http://geowarin.github.io/spring-boot-and-react-hot.html[my article] for an in-depth explanation.
+See [my article](http://geowarin.github.io/spring-boot-and-react-hot.html) for an in-depth explanation.
 
-This project also sets up spring security and http://projects.spring.io/spring-session/[spring-sessions], which will
+This project also sets up spring security and [spring-sessions](http://projects.spring.io/spring-session/), which will
 automatically store your sessions in Redis, allowing you to scale on multiple servers.
 
 Both the frontend and the backend are fully tested.
@@ -19,19 +17,8 @@ Both the frontend and the backend are fully tested.
 The Java code is available in the `backend` sub-project.
 The `frontend` sub-project contains the javascript code.
 
-In development you will have access to the awesome https://github.com/gaearon/redux-devtools[redux-dev-tools], which
+In development you will have access to the awesome [redux-dev-tools](https://github.com/gaearon/redux-devtools), which
 will allow you keep track of your application state and undo/redo every action at will.
-
-## But... I love Groovy :'(
-
-Me too pal...
-
-The project used to be coded in Groovy but since most of us use Java at work, I figured it would be more useful for a lot
-of people if the backend code was written in Java.
-
-There is a https://github.com/geowarin/boot-react/tree/groovy[groovy branch] that should be up to date.
-
-The tests are still http://geowarin.github.io/test-java-with-groovy.html[written in groovy].
 
 ### Running the backend (recommended)
 
@@ -54,7 +41,7 @@ run `./gradlew frontend:npmInstall`
 
 There is also a gradle task to run the spring server: `./gradlew bootRun`.
 
-The node version used by the gradle build is specified https://github.com/geowarin/boot-react/blob/master/frontend/build.gradle#L11-L12[here].
+The node version used by the gradle build is specified [here](https://github.com/geowarin/boot-react/blob/master/frontend/build.gradle#L11-L12).
 If you have an equivalent version of npm installed on your system, you can use it to start the frontend.
 
 Go in the `frontend` directory and type `npm install` to install the dependencies.
@@ -83,7 +70,7 @@ This allows the retrieval of the session data in Redis.
 If you want to use a real redis, you can run the application with the `redis` profile.
 
 If the `redis` profile is not active, your session will be stored in a map.
-See: https://github.com/geowarin/boot-react/blob/master/backend/src/main/java/react/config/redis/EmbeddedSessionConfig.java[EmbeddedSessionConfig].
+See: [EmbeddedSessionConfig](https://github.com/geowarin/boot-react/blob/master/backend/src/main/java/react/config/redis/EmbeddedSessionConfig.java).
 This is great in development but you should avoid it in production.
 
 Summary:
@@ -97,11 +84,11 @@ Summary:
 ### Active profiles
 
 If your run your project with gradle, the system properties won't be passed on to Spring.
-See https://github.com/spring-projects/spring-boot/issues/832[this issue] for workarounds.
+See [this issue](https://github.com/spring-projects/spring-boot/issues/832) for workarounds.
 
 The simplest way to go is to specify active profiles in your IDE.
 
-http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-profiles.html[Check out the doc] to learn
+[Check out the doc](http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-profiles.html) to learn
 more about profiles in Spring Boot.
 
 To run the jar in production mode use the following command:
@@ -114,17 +101,17 @@ java -jar boot-react-0.0.1-SNAPSHOT.jar --spring.profiles.active=production     
 
 The application is configured to work with Spring Security.
 It uses an in-memory authentication but you are free use
-http://docs.spring.io/spring-security/site/docs/4.0.2.RELEASE/reference/htmlsingle/#jc-authentication[other implementations]
-or to http://docs.spring.io/spring-security/site/docs/4.0.2.RELEASE/reference/htmlsingle/#core-services[roll your own].
+[other implementations](http://docs.spring.io/spring-security/site/docs/4.0.2.RELEASE/reference/htmlsingle/#jc-authentication)
+or to [roll your own](http://docs.spring.io/spring-security/site/docs/4.0.2.RELEASE/reference/htmlsingle/#core-services).
 
 ### Redux
 
-This project uses https://github.com/rackt/react-redux[Redux] to handle state and actions.
+This project uses [Redux](https://github.com/rackt/react-redux) to handle state and actions.
 It is a simple library with very powerful dev tools.
 
-Dan Abramov, the author of Redux, published a https://egghead.io/series/getting-started-with-redux[great Redux video tutorial].
+Dan Abramov, the author of Redux, published a [great Redux video tutorial](https://egghead.io/series/getting-started-with-redux).
 
-I also suggest reading the https://github.com/rackt/react-redux/blob/master/docs/quick-start.md[redux quick start] to understand
+I also suggest reading the [redux quick start](https://github.com/rackt/react-redux/blob/master/docs/quick-start.md) to understand
 how to architecture you application and the difference between containers and components.
 
 Components are simple display elements that receive everything they need (state and actions) via props.
@@ -133,25 +120,25 @@ Containers are connected to Redux and as such, they can pull whatever properties
 and bind actions to dispatch.
 Those containers are only connecting simple components to Redux.
 
-Small components are written using the https://facebook.github.io/react/blog/2015/10/07/react-v0.14.html#stateless-functional-components[stateless functional components syntax], i.e,
+Small components are written using the [stateless functional components syntax](https://facebook.github.io/react/blog/2015/10/07/react-v0.14.html#stateless-functional-components), i.e,
 those component are pure render components and only their props will have an impact on the DOM.
 
-Beware, hot reloading is not supported on functional components yet (see https://github.com/geowarin/boot-react/issues/13[this issue]) unless they are wrapped in a real Component.
+Beware, hot reloading is not supported on functional components yet (see [this issue](https://github.com/geowarin/boot-react/issues/13)) unless they are wrapped in a real Component.
 
-We can http://rackt.github.io/redux/docs/recipes/WritingTests.html[write tests] on connected components,
+We can [write tests](http://rackt.github.io/redux/docs/recipes/WritingTests.html) on connected components,
 but it is more effective to test them in isolation from Redux.
 
 ### Router push state
 
-The project uses https://github.com/rackt/react-router[react-router] to handle routes.
+The project uses [react-router](https://github.com/rackt/react-router) to handle routes.
 You can choose several modes to handles the router history.
 By default, the project uses the browser history,
 which creates the nicest URLs (**/login**, **/private**, etc.).
 
 In development, we use a dev server that
-https://github.com/geowarin/boot-react/blob/master/frontend/server.js#L21-L24[proxies] requests to the index.
+[proxies](https://github.com/geowarin/boot-react/blob/master/frontend/server.js#L21-L24) requests to the index.
 
-In production, we have to use a special https://github.com/geowarin/boot-react/blob/master/backend/src/main/java/react/config/SinglePageAppConfig.java[resource handler]
+In production, we have to use a special [resource handler](https://github.com/geowarin/boot-react/blob/master/backend/src/main/java/react/config/SinglePageAppConfig.java)
 to redirect all non-asset requests to the index.
 
 You can remove it if you choose to use memory history (no URL change) or hash history
@@ -159,20 +146,20 @@ You can remove it if you choose to use memory history (no URL change) or hash hi
 
 ### Stylus
 
-We use https://learnboost.github.io/stylus/[stylus] as a css preprocessor.
+We use [stylus](https://learnboost.github.io/stylus/) as a css preprocessor.
 We also leverage two stylus modules:
 
-* https://github.com/tj/nib[nib], which provides interesting mixins
-* http://jeet.gs/[jeet], a powerful grid system
+* [nib](https://github.com/tj/nib), which provides interesting mixins
+* [jeet](http://jeet.gs/), a powerful grid system
 
-See examples of jeet http://codepen.io/collection/eilAH/[here].
+See examples of jeet [here](http://codepen.io/collection/eilAH/).
 
 In development, the styles are included by webpack, which enables hot reloading.
-In production, we use the https://github.com/webpack/extract-text-webpack-plugin[Extract Text Plugin] to extract the css to a separate file.
+In production, we use the [Extract Text Plugin](https://github.com/webpack/extract-text-webpack-plugin) to extract the css to a separate file.
 
 ## Static assets
 
-If you want to include static assets like images in the project, please see https://github.com/geowarin/boot-react/issues/16[this issue],
+If you want to include static assets like images in the project, please see [this issue](https://github.com/geowarin/boot-react/issues/16),
 which explains how to use the URL loader.
 
 I'm real bad at creating logos but if you have time, I would be happy to include this by default in the project.
@@ -190,12 +177,12 @@ You can run the backend/frontend tests only with:
 ./gradlew backend/frontend:test
 ```
 
-To test the backend, we use a simple https://github.com/geowarin/spring-spock-mvc[library] that wraps
+To test the backend, we use a simple [library](https://github.com/geowarin/spring-spock-mvc) that wraps
 spring mvc tests and makes them a bit nicer to read.
-See the https://github.com/geowarin/boot-react/blob/master/backend/src/test/groovy/react/auth/AuthenticationSpec.groovy[auth-spec]
+See the [auth-spec](https://github.com/geowarin/boot-react/blob/master/backend/src/test/groovy/react/auth/AuthenticationSpec.groovy)
 for an example.
 
-To test the frontend, we use https://github.com/airbnb/enzyme[enzyme].
+To test the frontend, we use [enzyme](https://github.com/airbnb/enzyme).
 
 ## Shipping
 
@@ -211,7 +198,7 @@ You can then launch it with:
 java -jar build/libs/boot-react-0.0.1-SNAPSHOT.jar
 ```
 
-With spring boot 1.3, you can install the application http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/html/deployment-install.html#deployment-service[as a linux service]
+With spring boot 1.3, you can install the application [as a linux service](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/html/deployment-install.html#deployment-service)
 
 NB: each application can be assembled with the `assemble` task so you can use `frontend:assemble` or `backend:assemble`.
 The backend task depends on the frontend task.

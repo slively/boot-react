@@ -1,14 +1,7 @@
+logging.level.react: debug
 spring.devtools.livereload.enabled: false
+authentication.secret: super-secret
 
 ---
 spring:
     profiles: production
-
-# TODO: add the credentials to your production redis
-# preferably using environment variables
-
-# spring.profiles.active: redis
-#    redis:
-#      password:
-#      host:
-#      port:
