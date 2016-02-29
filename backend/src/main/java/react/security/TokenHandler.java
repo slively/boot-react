@@ -2,6 +2,7 @@ package react.security;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,9 @@ public final class TokenHandler {
 
   @Value("${security.token.secret:some-secret}")
   private String secret;
+
+  @Value("${security.token.TTLMinutes:120}")
+  private Integer ttlMinutes;
 
   private final UserService userService;
 
@@ -36,6 +40,7 @@ public final class TokenHandler {
     return Jwts.builder()
       .setSubject(user.getUsername())
       .signWith(SignatureAlgorithm.HS512, secret)
+      .setExpiration(DateTime.now().plusMinutes(ttlMinutes).toDate())
       .compact();
   }
 }
