@@ -36,7 +36,7 @@ public class DefaultConfiguration {
             .accountNonLocked(true)
             .credentialsNonExpired(true)
             .enabled(true)
-            .password(userRole.name())
+            .password(passwordEncoder.encode(userRole.name()))
             .username(userRole.name())
             .userRoles(Collections.singleton(UserRolePersistence.fromUserRole(userRole)))
             .build()

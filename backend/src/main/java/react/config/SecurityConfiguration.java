@@ -1,5 +1,6 @@
 package react.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -29,6 +30,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Autowired
   private UserService userService;
 
+  @Autowired
+  private ObjectMapper objectMapper;
+
   public SecurityConfiguration() {
     super(true);
   }
@@ -43,7 +47,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
       .headers().cacheControl();
 
     http.addFilterBefore(
-      new StatelessAuthenticationFilter(tokenAuthenticationService),
+      new StatelessAuthenticationFilter(tokenAuthenticationService, objectMapper),
       UsernamePasswordAuthenticationFilter.class
     );
   }

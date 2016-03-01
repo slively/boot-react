@@ -1,7 +1,6 @@
 package react.security;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +14,7 @@ public final class TokenHandler {
   @Value("${security.token.secret:some-secret}")
   private String secret;
 
-  @Value("${security.token.TTLMinutes:120}")
+  @Value("${security.token.TTLMinutes:1440}")
   private Integer ttlMinutes;
 
   private final UserService userService;
@@ -26,21 +25,20 @@ public final class TokenHandler {
   }
 
   public User parseUserFromToken(String token) {
-    String username = Jwts.parser()
+    Claims claims = Jwts.parser()
       .setSigningKey(secret)
       .parseClaimsJws(token)
-      .getBody()
-      .getSubject();
+      .getBody();
 
-    // TODO: make this lazy
-    return userService.loadUserByUsername(username);
+    // TODO: make this lazy?
+    return userService.loadUserByUsername(claims.getSubject());
   }
 
   public String createTokenForUser(User user) {
     return Jwts.builder()
       .setSubject(user.getUsername())
-      .signWith(SignatureAlgorithm.HS512, secret)
       .setExpiration(DateTime.now().plusMinutes(ttlMinutes).toDate())
+      .signWith(SignatureAlgorithm.HS512, secret)
       .compact();
   }
 }
