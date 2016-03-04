@@ -5,7 +5,7 @@ and [react transform](https://github.com/gaearon/babel-plugin-react-transform) f
 
 Everything: backend, frontend and styles will be hot reloaded automatically.
 
-See [my article](http://geowarin.github.io/spring-boot-and-react-hot.html) for an in-depth explanation.
+See [this article](http://geowarin.github.io/spring-boot-and-react-hot.html) for an in-depth explanation.
 
 This project also sets up spring security and [spring-sessions](http://projects.spring.io/spring-session/), which will
 automatically store your sessions in Redis, allowing you to scale on multiple servers.

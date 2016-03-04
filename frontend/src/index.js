@@ -9,19 +9,18 @@ import { redirectToLoginWithMessage, logout } from 'reducers/authentication';
 import { setLocale } from 'reducers/locale';
 import { browserHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
-
 import { Router } from 'react-router';
 import getRoutes from 'router/router';
-import { registerLocales } from 'config/translation';
 
 const devTools = process.env.NODE_ENV === 'development' ? <DevTools /> : null;
-
 const store = initStore();
 const history = syncHistoryWithStore(browserHistory, store);
-registerLocales(store);
-
 const actions = bindActionCreators({redirectToLoginWithMessage, logout}, store.dispatch);
-setupAxiosInterceptors(() => actions.redirectToLoginWithMessage('login.error.unauthorized'));
+
+setupAxiosInterceptors(() => {
+  actions.logout();
+  actions.redirectToLoginWithMessage('Please login to access this resource')
+});
 
 ReactDOM.render(
   <Provider store={store}>

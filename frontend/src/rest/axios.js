@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { displayAuthError, logout, getAuthToken } from 'reducers/authentication';
+import { displayAuthError, getAuthToken, AUTH_TOKEN_HEADER } from 'reducers/authentication';
 
 const badAuthCodes = [401, 403];
 
@@ -7,15 +7,14 @@ const setupAxiosInterceptors = onUnauthenticated => {
   const onRequestSuccess = config => {
     var token = getAuthToken();
     if (token) {
-      config.headers['x-auth-token'] = token;
+      config.headers[AUTH_TOKEN_HEADER] = token;
     }
     config.timeout = 10000;
     return config;
   };
   const onResponseSuccess = (response) => response;
   const onResponseError = error => {
-    if (badAuthCodes.find(error.status) >= 0) {
-      logout();
+    if (badAuthCodes.indexOf(error.status) >= 0) {
       onUnauthenticated();
     }
     return Promise.reject(error);

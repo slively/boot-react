@@ -6,9 +6,9 @@ const LOGIN_FAIL = 'authentication/LOGIN_FAIL';
 
 const LOGOUT = 'authentication/LOGOUT';
 
-const GET_ME = 'authentication/GET_SESSION';
-const GET_ME_SUCCESS = 'authentication/GET_SESSION_SUCCESS';
-const GET_ME_FAIL = 'authentication/GET_SESSION_FAIL';
+const GET_ME = 'authentication/GET_ME';
+const GET_ME_SUCCESS = 'authentication/GET_ME_SUCCESS';
+const GET_ME_FAIL = 'authentication/GET_ME_FAIL';
 
 const ERROR_MESSAGE = 'authentication/ERROR_MESSAGE';
 
@@ -77,6 +77,7 @@ export default function reducer(state = initialState, action) {
 // Public action creators and async actions
 
 const AUTH_TOKEN_KEY = 'auth-token';
+export const AUTH_TOKEN_HEADER = 'authorization';
 
 export function displayAuthError(message) {
   return {type: ERROR_MESSAGE, message};
@@ -87,7 +88,8 @@ export function login(username, password) {
     types: [LOGIN, LOGIN_SUCCESS, LOGIN_FAIL],
     promise: (client) => client.post('/api/auth/login', {username, password}),
     afterSuccess: (dispatch, getState, response) => {
-      localStorage.setItem(AUTH_TOKEN_KEY, response.headers['x-auth-token']);
+      console.log(response.headers);
+      localStorage.setItem(AUTH_TOKEN_KEY, response.headers[AUTH_TOKEN_HEADER]);
       const routingState = getState().routing.locationBeforeTransitions.state || {};
       browserHistory.push(routingState.nextPathname || '');
     }

@@ -12,7 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class TokenAuthenticationService {
 
-  private static final String AUTH_HEADER_NAME = "X-AUTH-TOKEN";
+  private static final String AUTH_HEADER_NAME = "Authorization";
+  private static final String TOKEN_PREFIX = "Bearer ";
 
   @Value("${authentication.secret:change-this}")
   private String secret;
@@ -25,14 +26,14 @@ public class TokenAuthenticationService {
   }
 
   public void addAuthentication(HttpServletResponse response, User user) {
-    response.addHeader(AUTH_HEADER_NAME, tokenHandler.createTokenForUser(user));
+    response.addHeader(AUTH_HEADER_NAME,TOKEN_PREFIX + tokenHandler.createTokenForUser(user));
   }
 
   public Authentication getAuthentication(HttpServletRequest request) {
     final String token = request.getHeader(AUTH_HEADER_NAME);
     UserAuthentication userAuthentication;
     if (token != null) {
-      final User user = tokenHandler.parseUserFromToken(token);
+      final User user = tokenHandler.parseUserFromToken(token.replace(TOKEN_PREFIX, ""));
       if (user != null) {
         userAuthentication = new UserAuthentication(user);
         return userAuthentication;

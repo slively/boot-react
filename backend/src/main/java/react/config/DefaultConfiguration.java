@@ -2,6 +2,7 @@ package react.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,35 +16,43 @@ import java.util.Arrays;
 import java.util.Collections;
 
 @Slf4j
-@Profile("default")
 @Configuration
+@Profile("default")
 public class DefaultConfiguration {
-  @Autowired
-  private UserRepository userRepository;
 
-  @Autowired
-  private PasswordEncoder passwordEncoder;
+  @Bean
+  public DatabaseSeeder databaseSeeder() {
+    return new DatabaseSeeder();
+  }
 
-  @PostConstruct
-  public void addUserForEachRole() {
-    Arrays.asList(UserRole.values()).forEach(userRole -> {
-      try {
-        log.info("Creating user for role: {}", userRole);
-        userRepository.save(
-          UserPersistence
-            .builder()
-            .accountNonExpired(true)
-            .accountNonLocked(true)
-            .credentialsNonExpired(true)
-            .enabled(true)
-            .password(passwordEncoder.encode(userRole.name()))
-            .username(userRole.name())
-            .userRoles(Collections.singleton(UserRolePersistence.fromUserRole(userRole)))
-            .build()
-        );
-      } catch (Exception e) {
-        log.info("Error creating user for role: {}", userRole);
-      }
-    });
+  public class DatabaseSeeder {
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @PostConstruct
+    public void addUserForEachRole() {
+      Arrays.asList(UserRole.values()).forEach(userRole -> {
+        try {
+          log.info("Creating user for role: {}", userRole);
+          userRepository.save(
+            UserPersistence
+              .builder()
+              .accountNonExpired(true)
+              .accountNonLocked(true)
+              .credentialsNonExpired(true)
+              .enabled(true)
+              .password(passwordEncoder.encode(userRole.name()))
+              .username(userRole.name())
+              .userRoles(Collections.singleton(UserRolePersistence.fromUserRole(userRole)))
+              .build()
+          );
+        } catch (Exception e) {
+          log.info("Error creating user for role: {}", userRole);
+        }
+      });
+    }
   }
 }

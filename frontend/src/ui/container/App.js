@@ -3,16 +3,8 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { getMe } from 'reducers/authentication';
 import { setLocale } from 'reducers/locale';
-import counterpart from 'counterpart';
-import { locales } from 'config/translation';
 
 import 'stylus/main.styl';
-
-var LocaleSwitcher = ({currentLocale, onLocaleChange}) => (
-  <select value={currentLocale} onChange={e => onLocaleChange(e.target.value)}>
-    {locales.map(lang => <option key={lang} value={lang}>{lang}</option>)}
-  </select>
-);
 
 const TopMenu = (props) => {
   const items = props.items.map((item, key) => (
@@ -25,7 +17,6 @@ const TopMenu = (props) => {
       <ul className="pure-menu-list">
         {items}
       </ul>
-      <LocaleSwitcher currentLocale={props.currentLocale} onLocaleChange={props.setLocale} />
     </div>
   );
 };

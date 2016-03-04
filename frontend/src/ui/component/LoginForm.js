@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Form, TextInput, Label } from 'react-easy-form';
-import Translate from 'react-translate-component';
 
 const LabeledInput = (props) => (
   <div className="pure-control-group">
@@ -11,9 +10,7 @@ const LabeledInput = (props) => (
 );
 
 const ErrorPanel = ({messageKey}) => (
-  <p className="error-panel">
-    <Translate content={messageKey} />
-  </p>
+  <p className="error-panel">{messageKey}</p>
 );
 
 export default class LoginForm extends Component {
@@ -23,9 +20,7 @@ export default class LoginForm extends Component {
     const errorPanel = errorMessage ? <ErrorPanel messageKey={errorMessage}/> : null;
     return (
       <div>
-        <Translate component="h2" content="login.title" />
-
-        <Translate component="p" content="login.hint" />
+        <h2 content="Login Page" />
 
         {errorPanel}
 
