@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import { getSession } from 'reducers/authentication';
+import { getMe } from 'reducers/authentication';
 import { setLocale } from 'reducers/locale';
 import counterpart from 'counterpart';
 import { locales } from 'config/translation';
@@ -33,7 +33,7 @@ const TopMenu = (props) => {
 export class App extends Component {
 
   componentDidMount() {
-    this.props.getSession();
+    this.props.getMe();
   }
 
   render() {
@@ -55,5 +55,5 @@ export class App extends Component {
 
 export default connect(
   state => ({isAuthenticated: state.authentication.isAuthenticated, currentLocale: state.locale.currentLocale}),
-  {getSession, setLocale}
+  {getMe, setLocale}
 )(App);

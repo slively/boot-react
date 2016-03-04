@@ -5,12 +5,10 @@ const LOGIN_SUCCESS = 'authentication/LOGIN_SUCCESS';
 const LOGIN_FAIL = 'authentication/LOGIN_FAIL';
 
 const LOGOUT = 'authentication/LOGOUT';
-const LOGOUT_SUCCESS = 'authentication/LOGOUT_SUCCESS';
-const LOGOUT_FAIL = 'authentication/LOGOUT_FAIL';
 
-const GET_SESSION = 'authentication/GET_SESSION';
-const GET_SESSION_SUCCESS = 'authentication/GET_SESSION_SUCCESS';
-const GET_SESSION_FAIL = 'authentication/GET_SESSION_FAIL';
+const GET_ME = 'authentication/GET_SESSION';
+const GET_ME_SUCCESS = 'authentication/GET_SESSION_SUCCESS';
+const GET_ME_FAIL = 'authentication/GET_SESSION_FAIL';
 
 const ERROR_MESSAGE = 'authentication/ERROR_MESSAGE';
 
@@ -28,41 +26,41 @@ export default function reducer(state = initialState, action) {
     case LOGIN_SUCCESS:
       return {
         ...state,
-        isAuthenticated: action.result.data.authenticated,
-        username: action.result.data.userName,
+        isAuthenticated: true,
+        user: action.result.data,
         errorMessage: null
       };
     case LOGIN_FAIL:
       return {
         ...state,
         isAuthenticated: false,
-        username: null,
-        errorMessage: action.error.data.messageKey
+        user: null,
+        error: action.error.data
       };
-    case LOGOUT_SUCCESS:
+    case LOGOUT:
       return {
         ...state,
         isAuthenticated: false,
-        username: null
+        user: null
       };
-    case GET_SESSION:
+    case GET_ME:
       return {
         ...state,
         loading: true
       };
-    case GET_SESSION_SUCCESS:
+    case GET_ME_SUCCESS:
       return {
         ...state,
-        isAuthenticated: action.result.data.authenticated || false,
-        username: action.result.data.userName,
+        isAuthenticated: true,
+        user: action.result.data,
         errorMessage: null,
         loading: false
       };
-    case GET_SESSION_FAIL:
+    case GET_ME_FAIL:
       return {
         ...state,
         isAuthenticated: false,
-        username: null,
+        user: null,
         debugError: action.error,
         loading: false
       };
@@ -78,6 +76,8 @@ export default function reducer(state = initialState, action) {
 
 // Public action creators and async actions
 
+const AUTH_TOKEN_KEY = 'auth-token';
+
 export function displayAuthError(message) {
   return {type: ERROR_MESSAGE, message};
 }
@@ -85,9 +85,9 @@ export function displayAuthError(message) {
 export function login(username, password) {
   return {
     types: [LOGIN, LOGIN_SUCCESS, LOGIN_FAIL],
-    promise: (client) => client.post('/api/session', {username, password}),
+    promise: (client) => client.post('/api/auth/login', {username, password}),
     afterSuccess: (dispatch, getState, response) => {
-      localStorage.setItem('auth-token', response.headers['x-auth-token']);
+      localStorage.setItem(AUTH_TOKEN_KEY, response.headers['x-auth-token']);
       const routingState = getState().routing.locationBeforeTransitions.state || {};
       browserHistory.push(routingState.nextPathname || '');
     }
@@ -95,19 +95,20 @@ export function login(username, password) {
 }
 
 export function logout() {
+  localStorage.removeItem(AUTH_TOKEN_KEY);
   return {
-    types: [LOGOUT, LOGOUT_SUCCESS, LOGOUT_FAIL],
-    promise: (client) => client.delete('/api/session'),
-    afterSuccess: () => {
-      browserHistory.push('login');
-    }
+    type: LOGOUT
   };
 }
 
-export function getSession() {
+export function getAuthToken() {
+  return localStorage.getItem(AUTH_TOKEN_KEY);
+}
+
+export function getMe() {
   return {
-    types: [GET_SESSION, GET_SESSION_SUCCESS, GET_SESSION_FAIL],
-    promise: (client) => client.get('/api/session')
+    types: [GET_ME, GET_ME_SUCCESS, GET_ME_FAIL],
+    promise: (client) => client.get('/api/auth/me')
   };
 }
 

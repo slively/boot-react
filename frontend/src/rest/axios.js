@@ -1,9 +1,11 @@
 import axios from 'axios';
-import { displayAuthError } from 'reducers/authentication';
+import { displayAuthError, logout, getAuthToken } from 'reducers/authentication';
+
+const badAuthCodes = [401, 403];
 
 const setupAxiosInterceptors = onUnauthenticated => {
   const onRequestSuccess = config => {
-    var token = localStorage.getItem('auth-token');
+    var token = getAuthToken();
     if (token) {
       config.headers['x-auth-token'] = token;
     }
@@ -12,8 +14,8 @@ const setupAxiosInterceptors = onUnauthenticated => {
   };
   const onResponseSuccess = (response) => response;
   const onResponseError = error => {
-    if (error.status == 403) {
-      localStorage.removeItem('auth-token');
+    if (badAuthCodes.find(error.status) >= 0) {
+      logout();
       onUnauthenticated();
     }
     return Promise.reject(error);

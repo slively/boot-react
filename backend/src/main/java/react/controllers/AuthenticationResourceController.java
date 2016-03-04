@@ -31,7 +31,7 @@ public class AuthenticationResourceController implements AuthenticationResource 
   @Override
   public ResponseEntity<User> me() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    if (authentication.isAuthenticated()) {
+    if (authentication.getDetails() != null) {
       return ResponseEntity.ok((User)authentication.getDetails());
     }
     return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);

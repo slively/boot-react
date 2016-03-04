@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 export default class ListComponent extends Component {
   render() {
     var items = this.props.items;
-    var list = items.map((item, index) => <li key={index}>{item}</li>);
+    var list = items.map((item, index) => <li key={index}>{item.value}</li>);
 
     return (
       <div>
